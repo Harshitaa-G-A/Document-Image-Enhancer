@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocMaster</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        #binarize-form {
+    margin-top: -20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#binarize-form input[type="file"] {
+    margin-bottom: 10px;
+}
+
+#binarize-form button[type="submit"] {
+    padding: 10px 20px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+#email-form button[type="submit"] {
+    padding: 10px 20px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+#binarize-form button[type="submit"]:hover {
+    background-color: gray;
+}
+
+        .container {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 20px;
+            max-width: 100%;
+            height: 100vh;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 20px;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            overflow-y: auto;
+            padding-right: 10px;
+            box-sizing: content-box; 
+            width: calc(100% - 10px);
+        }
+
+        .sidebar-item {
+            background-color: #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            padding: 10px;
+            text-align: center;
+            
+        }
+
+        .sidebar-item:hover {
+            background-color: #ccc;
+            transform: scale(1.06);
+        }
+
+        .main-content {
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: auto; 
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 20px;
+        }
+
+        .card {
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: scale(1.08);
+        }
+        h1, h2 {
+            color: #333;
+        }
+       
+
+.custom-file-upload {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.custom-file-upload img {
+    width: 50px;
+    height: auto;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+}
+
+.custom-file-upload::before {
+   
+    display: block;
+    text-align: center;
+    background-color: black;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.custom-file-upload:hover::before {
+    background-color: black;
+}
+
+        .content-box {
+            max-width: 600px; 
+            margin: auto;
+            text-align: center;
+            grid-column: span 4; 
+        }
+        h1, h2 {
+            color: #333;
+            margin-top: -10px; 
+        }@keyframes echo {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.echo-effect {
+  animation: echo 1.5s infinite;
+}
+
+        .result-container {
+            margin-top: 30px;
+            text-align: center;
+            display: none;
+        }
+        #show-files-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: black;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            padding: 10px;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        #show-enhanced-files-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: black;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            padding: 10px;
+            text-align: center;
+            font-size: 1rem; 
+            font-weight: bold;
+        }
+        #show-converted-files-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: black;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            padding: 10px;
+            text-align: center;
+            font-size: 1rem; 
+            font-weight: bold;
+        }
+        #show2-files-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: black;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            padding: 10px;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        #signup {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: black;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            padding: 10px;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        #login {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: black;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            padding: 10px;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        #logout {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: black;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            padding: 10px;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        .popup-card {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border: 1px solid black;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            z-index: 9999;
+            max-width: 80%;
+            max-height: 80%;
+            overflow: auto;
+        }
+        .popup-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+        .popup2-card {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border: 1px solid black;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            z-index: 9999;
+            max-width: 80%;
+            max-height: 80%;
+            overflow: auto;
+        }
+        .popup2-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+        ::-webkit-scrollbar {
+    width: 10px;
+    border-radius: 10px; 
+}
+
+
+::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 10px;
+}
+
+
+::-webkit-scrollbar-track:hover {
+    background: #f0f0f0;
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+        .home-button {
+            position: fixed;
+            top: -5px;
+            right: 4px;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 0;
+            cursor: pointer;
+            z-index: 9999;
+            background-color: transparent;
+        }
+        .home-button img {
+            width: 50px; 
+            height: auto; 
+            margin:0;
+        }
+        .home-button:hover{
+            transform: scale(1.1);
+        }
+        .popup-close-btn img{
+            width: 30px; 
+            height: auto; 
+            margin:0;
+        }
+        .popup-close-btn{
+            background-color: transparent;
+            border:none;
+        }
+        .extracted-files ul {
+        list-style: none; 
+        padding: 0;
+        margin: 0;
+    }
+    .converted-files ul {
+        list-style: none; 
+        padding: 0;
+        margin: 0;
+    }
+    .enhanced-files ul {
+        list-style: none; 
+        padding: 0;
+        margin: 0;
+    }
+
+    .file-box {
+    border: 2px solid black; 
+    padding: 5px;
+    margin-bottom: 5px; 
+    max-width: 200px; 
+    display: flex; 
+    align-items: center;
+    height: 50px;
+}
+
+
+.file-icon {
+    width: 50px; 
+    margin-right: 5px; 
+    margin-left: 0; 
+}
+  
+    .file-link {
+        color: black; 
+        text-decoration: none; 
+        margin: 0;
+    }
+    .left-popup {
+    position: fixed;
+    top: 50%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+
+}
+
+.right-popup {
+    position: fixed;
+    top: 50%;
+    right: 20%;
+    transform: translate(50%, -50%);
+   
+}
+
+
+.sidebar h1 {
+    display: flex;
+    align-items: center; 
+}
+
+.sidebar-icon {
+    margin-left: 10px; 
+}
+.color-circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+.color-circle:hover{
+    transform: scale(1.1);
+}
+
+.black {
+    background-color: black;
+    border: 2px solid black;
+    
+}
+#certificate-form {
+            border: 3px solid #000; /* Black border */
+            border-radius: 10%;
+            padding: 20px;
+            margin-top: 20px;
+            max-width: 400px; /* Set maximum width for better display on smaller screens */
+            margin: 0 auto; /* Center the form horizontally */
+        }
+        #create-certificate-btn {
+            background-color: black;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: block;
+            margin-top: 20px;
+        }
+        #email-form {
+            border: 3px solid #000; /* Black border */
+            border-radius: 10%;
+            padding: 20px;
+            margin-top: 20px;
+            max-width: 400px; /* Set maximum width for better display on smaller screens */
+            margin: 0 auto; /* Center the form horizontally */
+        }
+        #create-certificate-btn {
+            background-color: black;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: block;
+            margin-top: 20px;
+        }
+        label {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .image-container {
+            margin-right: 300px; 
+            margin-top:-20px;/* Adjust the spacing between the image and the form */
+        }
+        #create-certificate-btn:hover {
+            background-color: gray;
+            transform: scale(1.1);
+        }
+        .save-certificate-btn:hover{
+            background-color: gray;
+            transform: scale(1.1);
+        }
+.brown {
+    background-color: brown;
+    border: 2px solid brown;
+}
+.none {
+    background: linear-gradient(45deg, transparent 45%, black 45%, black 55%, transparent 55%);
+    border: 2px solid black;
+}
+.overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px); 
+            z-index: 9998; 
+            display: none; 
+        }
+    </style>
+  
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h1>DocMaster
+                <img src="https://static.thenounproject.com/png/4895014-200.png" alt="Icon" style="width: 70px; height: auto; margin-right: 10px;">
+            </h1>
+            {% if logged_in %}
+
+            <div class="sidebar-item">
+                <button id="show-files-btn"><h2>Extracted Files</h2></button>
+                <div class="extracted-files" style="display: none;">
+                    <ul>
+                        {% for file in extracted_files %}
+                            <li class="file-box">
+                                <img src="https://media.geeksforgeeks.org/wp-content/uploads/20210921235140/txt-300x300.png" alt="File Icon" class="file-icon">
+                                <a href="{{ url_for('uploaded_file', filename=file) }}" class="file-link">{{ file }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="sidebar-item">
+                <button id="show-enhanced-files-btn"><h2>Enhanced Docs</h2></button>
+                <div class="enhanced-files" style="display: none;">
+                    <ul>
+                        {% for file in enhanced_files %}
+                            <li class="file-box">
+                                <img src="https://static.thenounproject.com/png/4147238-200.png" alt="File Icon" class="file-icon">
+                                <a href="{{ url_for('uploaded_file', filename=file) }}" class="file-link">{{ file }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="sidebar-item">
+                <button id="show-converted-files-btn"><h2>Converted Docs</h2></button>
+                <div class="converted-files" style="display: none;">
+                    <ul>
+                        {% for file in converted_files %}
+                            <li class="file-box">
+                                <img src="https://media.geeksforgeeks.org/wp-content/uploads/20210921235140/txt-300x300.png" alt="File Icon" class="file-icon">
+                                <a href="{{ url_for('uploaded_file2', filename=file) }}" class="file-link">{{ file }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+            {% if logged_in %}
+            <div class="sidebar-item">
+                <button id="logout" onclick="logout()"><h2>Log out</h2></button>
+            </div>
+            {% else %}
+            <div class="sidebar-item">
+                <button id="login" class="echo-effect" onclick="login()"><h2>Log in</h2></button>
+            </div>
+            <div class="sidebar-item">
+                <button id="signup" onclick="signup()"><h2>Sign Up</h2></button>
+            </div>
+            {% endif %}
+            <button class="home-button" onclick="goHome()">
+                <img id="icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxbN1r4yNrB077uOWJ5hUDCdYWeTIB6KeNOoi2EbBH8OjznEcoen4sqO3FbtwHZ5HLghY&usqp=CAU"/>
+            </button>
+        </div>
+        <div class="main-content">
+            <div class="content-box" id="content-box">
+                <img id="result-image" src="{{ url_for('uploaded_file', filename=result_image) }}"  alt="">
+
+            </div>
+            <div class="card" id="binarize">
+                <img id="icon" src="https://static.thenounproject.com/png/250740-200.png" alt="">
+                <h2>Binarize</h2>
+            </div>            
+            {% if logged_in %}
+            <div class="card" id="deblur">
+
+                <img id="icon" src="https://static.thenounproject.com/png/3138659-200.png" alt="">
+                <h2>Deblur</h2>
+            </div>
+            {% else %}
+            <div class="card" id="deblur">
+                <img id="lock" class="echo-effect" src="https://images.vexels.com/media/users/3/132074/isolated/preview/0117cb0129593faa02646a8277ca80e3-security-lock-icon.png" alt="" style="width:40px;height:40px">
+                <img id="icon" src="https://static.thenounproject.com/png/3138659-200.png" alt="">
+                <h2>Deblur</h2>
+            </div>
+            {% endif %}
+            {% if logged_in %}
+            <div class="card" id="remove-watermark">
+
+                <img id="icon" src="https://static.thenounproject.com/png/4589824-200.png" alt="">
+                <h2>Remove Watermark</h2>
+    
+            </div>
+            {% else %}
+            <div class="card" id="remove-watermark">
+                <img id="lock" class="echo-effect" src="https://images.vexels.com/media/users/3/132074/isolated/preview/0117cb0129593faa02646a8277ca80e3-security-lock-icon.png" alt="" style="width:40px;height:40px">
+                <img id="icon" src="https://static.thenounproject.com/png/4589824-200.png" alt="">
+                <h2>Remove Watermark</h2>
+    
+            </div>
+            {% endif %}
+            {% if logged_in %}
+            <div class="card" id="text-extraction">
+               
+                <img id="icon" src="https://static.thenounproject.com/png/1510110-200.png" alt="">
+                <h2>Text Extraction</h2>
+                
+            </div>
+            {% else %}
+            <div class="card" id="text-extraction">
+                <img id="lock" class="echo-effect" src="https://images.vexels.com/media/users/3/132074/isolated/preview/0117cb0129593faa02646a8277ca80e3-security-lock-icon.png" alt="" style="width:40px;height:40px">
+                <img id="icon" src="https://static.thenounproject.com/png/1510110-200.png" alt="">
+                <h2>Text Extraction</h2>
+                
+            </div>
+            {% endif %}
+            {% if logged_in %}
+            <div class="card" id="generate-doc">
+
+                <img id="icon" src="https://icon-library.com/images/create-document-icon/create-document-icon-22.jpg" alt="">
+                <h2>Generate Doc</h2>
+            </div>
+            {% else %}
+            <div class="card" id="generate-doc">
+                <img id="lock" class="echo-effect" src="https://images.vexels.com/media/users/3/132074/isolated/preview/0117cb0129593faa02646a8277ca80e3-security-lock-icon.png" alt="" style="width:40px;height:40px">
+                <img id="icon" src="https://icon-library.com/images/create-document-icon/create-document-icon-22.jpg" alt="">
+                <h2>Generate Doc</h2>
+            </div>
+            {% endif %}
+            
+            {% if logged_in %}
+            <div class="card" id="handwritten">
+
+                <img id="icon" src="https://cdn2.iconfinder.com/data/icons/apple-classic/100/Apple_classic_1IconA_5px_grid-01-512.png" alt="">
+                <h2>Handwritten Doc</h2>
+    
+            </div>
+            {% else %}
+            <div class="card" id="handwritten">
+                <img id="lock" class="echo-effect" src="https://images.vexels.com/media/users/3/132074/isolated/preview/0117cb0129593faa02646a8277ca80e3-security-lock-icon.png" alt="" style="width:40px;height:40px">
+                <img id="icon" src="https://cdn2.iconfinder.com/data/icons/apple-classic/100/Apple_classic_1IconA_5px_grid-01-512.png" alt="">
+                <h2>Handwritten Doc</h2>
+    
+            </div>
+            {% endif %}
+            {% if logged_in %}
+            <div class="card" id="share-doc">
+
+                <img id="icon" src="https://www.svgrepo.com/show/309955/share.svg" alt="">
+                <h2>Share Docs</h2>
+            </div>
+            {% else %}
+            <div class="card" id="share-doc">
+                <img id="lock" class="echo-effect" src="https://images.vexels.com/media/users/3/132074/isolated/preview/0117cb0129593faa02646a8277ca80e3-security-lock-icon.png" alt="" style="width:40px;height:40px">
+                <img id="icon" src="https://www.svgrepo.com/show/309955/share.svg" alt="">
+                <h2>Share Docs</h2>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="overlay"></div>
+
+    
+    <script>
+        const mainContent = document.querySelector('.main-content');
+        const contentBox = document.getElementById('content-box');
+       
+
+        document.getElementById('binarize').addEventListener('click', function() {
+            contentBox.innerHTML = `
+<form id="binarize-form" action="/binarize" method="post" enctype="multipart/form-data">
+    <label for="file-input" class="custom-file-upload">
+        <img src="https://cdn-icons-png.flaticon.com/512/70/70310.png" alt="">
+    </label>
+    <input id="file-input" type="file" name="image" accept="image/*" required>
+    <button type="submit">Binarize Document</button>
+</form>
+            `;           
+        });
+        document.getElementById('handwritten').addEventListener('click', function() {
+            contentBox.innerHTML = `
+<form id="handwritten-form" action="/handwritten" method="post" enctype="multipart/form-data">
+    <label for="file-input" class="custom-file-upload">
+        <img src="https://cdn-icons-png.flaticon.com/512/70/70310.png" alt="">
+    </label>
+    <input id="file-input" type="file" name="image" accept="image/*" required>
+    <button type="submit">Convert handwritten</button>
+</form>
+            `;           
+        });
+        document.getElementById("logout").addEventListener("click", function() {
+        // Perform AJAX request to logout route
+        fetch("/logout", { method: "GET" })
+            .then(response => {
+                // Redirect to the home page after successful logout
+                window.location.href = "/";
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    });
+    document.getElementById('generate-doc').addEventListener('click', function() {
+    contentBox.innerHTML = `
+    <div id="certificate-popup" class="certificate-popup">
+        <div class="certificate-popup-content">
+            {% if logged_in %}
+            <img id="certificate-img" src="" alt="">
+            {% endif %}
+            <button type="button" id="save-certificate-btn" style="display: none; background-color: black; color: white; font-size:1rem;width: 120px; height: 40px;margin-bottom: 60px;">Download</button>
+        </div>
+    </div>
+    <div class="image-container" >
+        <img src="https://static.thenounproject.com/png/210072-200.png" alt="Icon" style="width: 50px; height: 50px;">
+    </div>
+    <form id="certificate-form" action="/generate-certificate" method="post">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        
+        <label for="year">Year of Study:</label>
+        <input type="text" id="year" name="year" required><br><br>
+        
+        <label for="department">Department:</label>
+        <input type="text" id="department" name="department" required><br><br>
+
+        <label for="college">College:</label>
+        <input type="text" id="college" name="college" required><br><br>
+
+        <label for="place">Place:</label>
+        <input type="text" id="place" name="place" required><br><br>
+        
+        <label for="incharge">Incharge:</label>
+        <input type="text" id="incharge" name="incharge" required><br><br>
+
+        <label for="event_name">Event Name:</label>
+        <input type="text" id="event_name" name="event_name" required><br><br>
+        
+        <button type="submit" id="create-certificate-btn">Generate</button>
+    </form>
+    `;
+    
+    // Add event listener to the "Save" button
+    document.getElementById('create-certificate-btn').addEventListener('click', function() {
+        // Show the "Save" button
+        document.getElementById('save-certificate-btn').style.display = 'block';
+        
+        // Add event listener to the "Save" button
+        document.getElementById('save-certificate-btn').addEventListener('click', function() {
+            // Get the certificate image source
+            var certificateImgSrc = document.getElementById('certificate-img').src;
+
+            // Create an anchor element to trigger download
+            var downloadLink = document.createElement('a');
+            downloadLink.href = certificateImgSrc;
+            downloadLink.download = 'certificate.png';
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        });
+        
+        // Add event listener to the form submission
+        document.getElementById('certificate-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission behavior
+
+            // Submit the form via AJAX
+            fetch('/generate-certificate', {
+                method: 'POST',
+                body: new FormData(document.getElementById('certificate-form')),
+            })
+            .then(response => response.blob()) // Get the response as a Blob
+            .then(blob => {
+                // Create a URL for the Blob object
+                const url = URL.createObjectURL(blob);
+                
+                // Display the certificate image in the popup
+                document.getElementById('certificate-img').src = url;
+                document.getElementById('certificate-popup').style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    });
+});
+
+// Function to close the certificate popup
+function closeCertificatePopup() {
+    document.getElementById('certificate-popup').style.display = 'none';
+}
+
+        document.getElementById('deblur').addEventListener('click', function() {
+            contentBox.innerHTML = `
+<form id="binarize-form" action="/deblur" method="post" enctype="multipart/form-data">
+    <label for="file-input" class="custom-file-upload">
+        <img src="https://cdn-icons-png.flaticon.com/512/70/70310.png" alt="">
+    </label>
+    <input id="file-input" type="file" name="image" accept="image/*" required>
+    <button type="submit">Deblur Document</button>
+</form>
+            `;       
+        });
+        document.getElementById('show-files-btn').addEventListener('click', function() {
+            var extractedFilesDiv = document.querySelector('.extracted-files');
+            if (extractedFilesDiv.style.display === 'none') {
+                extractedFilesDiv.style.display = 'block';
+            } else {
+                extractedFilesDiv.style.display = 'none';
+            }
+        });
+        document.getElementById('show-converted-files-btn').addEventListener('click', function() {
+            var extractedFilesDiv = document.querySelector('.converted-files');
+            if (extractedFilesDiv.style.display === 'none') {
+                extractedFilesDiv.style.display = 'block';
+            } else {
+                extractedFilesDiv.style.display = 'none';
+            }
+        });
+        document.getElementById('remove-watermark').addEventListener('click', function() {
+            contentBox.innerHTML = `
+<form id="binarize-form" action="/remove-watermark" method="post" enctype="multipart/form-data">
+    <label for="file-input" class="custom-file-upload">
+        <img src="https://cdn-icons-png.flaticon.com/512/70/70310.png" alt="">
+    </label>
+    <input id="file-input" type="file" name="image" accept="image/*" required>
+    <button type="submit">Remove Watermark</button>
+</form>
+            `;
+        });
+
+        document.getElementById('text-extraction').addEventListener('click', function() {
+            contentBox.innerHTML = `
+
+            <form id="binarize-form" action="/extracttext" method="post" enctype="multipart/form-data">
+    <label for="file-input" class="custom-file-upload">
+        <img src="https://cdn-icons-png.flaticon.com/512/70/70310.png" alt="">
+    </label>
+    <input id="file-input" type="file" name="image" accept="image/*" required>
+    <button type="submit">Extract Text</button>
+</form>
+
+            `;
+            
+        
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            const extractedFiles = document.querySelectorAll('.extracted-files a');
+            extractedFiles.forEach(function(fileLink) {
+                fileLink.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const fileUrl = fileLink.getAttribute('href');
+                    fetch(fileUrl)
+                        .then(response => response.text())
+                        .then(data => {
+                            displayPopup(data);
+                        })
+                        .catch(error => console.error('Error fetching file:', error));
+                });
+            });
+        });
+        document.getElementById('text-extraction').addEventListener('click', function() {
+            contentBox.innerHTML = `
+
+            <form id="binarize-form" action="/extracttext" method="post" enctype="multipart/form-data">
+    <label for="file-input" class="custom-file-upload">
+        <img src="https://cdn-icons-png.flaticon.com/512/70/70310.png" alt="">
+    </label>
+    <input id="file-input" type="file" name="image" accept="image/*" required>
+    <button type="submit">Extract Text</button>
+</form>
+
+            `;
+            
+        
+        });
+        function displayPopup2(content, fileName) {
+    // Create a new popup element
+    const popup = document.createElement('div');
+    popup.classList.add('popup');
+    
+    // Create the popup content
+    const popupContent = `
+        <div class="popup-card">
+            <button class="popup-close-btn" onclick="closePopup()">
+                <img id="icon" src="https://cdn3.iconfinder.com/data/icons/pyconic-icons-1-2/512/close-512.png"/>
+            </button>
+            <h2>${fileName}</h2>
+            <pre>${content}</pre>
+        </div>`;
+    
+    // Set the content inside the popup
+    popup.innerHTML = popupContent;
+
+    // Append the popup to the body
+    document.body.appendChild(popup);
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const extractedFiles = document.querySelectorAll('.converted-files a');
+    extractedFiles.forEach(function(fileLink) {
+        fileLink.addEventListener('click', function(event) {
+            event.preventDefault();
+            const fileUrl = fileLink.getAttribute('href');
+            const fileName = fileLink.textContent; // Assuming the file name is the text content of the link
+            fetch(fileUrl)
+                .then(response => response.text())
+                .then(data => {
+                    displayPopup2(data, fileName);
+                })
+                .catch(error => console.error('Error fetching file:', error));
+        });
+    });
+});
+
+        document.getElementById('show-enhanced-files-btn').addEventListener('click', function() {
+        var enhancedFilesDiv = document.querySelector('.enhanced-files');
+        if (enhancedFilesDiv.style.display === 'none') {
+            enhancedFilesDiv.style.display = 'block';
+        } else {
+            enhancedFilesDiv.style.display = 'none';
+        }
+    });
+
+    const enhancedFiles = document.querySelectorAll('.enhanced-files a');
+    enhancedFiles.forEach(function(fileLink) {
+        fileLink.addEventListener('click', function(event) {
+            event.preventDefault();
+            const fileUrl = fileLink.getAttribute('href');
+            fetch(fileUrl)
+                .then(response => response.blob())
+                .then(blob => {
+                    displayImagePopup(blob);
+                })
+                .catch(error => console.error('Error fetching file:', error));
+        });
+    });
+    </script>
+     <script>
+       function displayPopup(content) {
+        document.querySelector('.overlay').style.display = 'block';
+    const popupContent = `
+        <div class="popup-card">
+            <button class="popup-close-btn" onclick="closePopup()">
+                <img id="icon" src="https://cdn3.iconfinder.com/data/icons/pyconic-icons-1-2/512/close-512.png"/>
+            </button>
+            <h2>Extracted Text</h2>
+            <pre>${content}</pre>
+            <button onclick="decryptText('${content}')">Decrypt</button>
+        </div>`;
+    document.body.insertAdjacentHTML('beforeend', popupContent);
+}
+
+function login() {
+        document.querySelector('.overlay').style.display = 'block';
+    const popupContent = `
+    <div id="login-popup" class="popup-card">
+    <button class="popup-close-btn" onclick="closePopup()"> <!-- Close button -->
+        <img src="https://cdn3.iconfinder.com/data/icons/pyconic-icons-1-2/512/close-512.png" />
+    </button>
+    <h2>Login</h2>
+    <form id="login-form" action="/login" method="post" enctype="multipart/form-data">
+        <label for="login-email">Username:</label>
+        <input type="text" id="login-email" name="login-email" required><br><br>
+        <label for="login-password">Password:</label>
+        <input type="password" id="login-password" name="login-password" required><br><br>
+        <button type="submit">Log In</button>
+    </form>
+</div>
+            `; 
+    document.body.insertAdjacentHTML('beforeend', popupContent);
+}
+function signup() {
+        document.querySelector('.overlay').style.display = 'block';
+    const popupContent = `
+    <div id="signup-popup" class="popup-card" style="display: block;">
+    <button class="popup-close-btn" onclick="closePopup()"> <!-- Close button -->
+        <img src="https://cdn3.iconfinder.com/data/icons/pyconic-icons-1-2/512/close-512.png" />
+    </button>
+    <h2>Sign Up</h2>
+    <form id="signup-form" action="/signup" method="post" enctype="multipart/form-data">
+        <label for="signup-email">Username:</label>
+        <input type="text" id="signup-email" name="signup-email" required><br><br>
+        <label for="signup-password">Password:</label>
+        <input type="password" id="signup-password" name="signup-password" required><br><br>
+        <button type="submit">Sign Up</button>
+    </form>
+</div>
+
+            `;       
+    document.body.insertAdjacentHTML('beforeend', popupContent);
+}
+
+function decryptText(content) {
+    closePopup();
+    document.querySelector('.overlay').style.display = 'block';
+    const keyInputPopup = `
+        <div class="popup-card">
+            <button class="popup-close-btn" onclick="closePopup()">
+                <img id="icon" src="https://cdn3.iconfinder.com/data/icons/pyconic-icons-1-2/512/close-512.png"/>
+            </button>
+            <h2>Secret Key</h2>
+            <label for="decryption-key">Enter secret key:</label>
+            <input type="text" id="decryption-key" />
+            <button onclick="submitDecryptionKey('${content}')">Submit</button>
+        </div>`;
+    document.body.insertAdjacentHTML('beforeend', keyInputPopup);
+}
+
+function submitDecryptionKey(content) {
+    document.querySelector('.overlay').style.display = 'block';
+   
+    const decryptionKey = document.getElementById('decryption-key').value;
+
+    if (decryptionKey === '123') {
+    
+        const keyInputPopup = document.querySelector('.popup-card');
+        if (keyInputPopup) {
+            keyInputPopup.remove();
+        }
+
+        
+        var encryptedText = content.replace(/[^a-zA-Z]/g, ''); 
+        var decryptedText = decrypt(encryptedText);
+
+    
+        const decryptedPopupContent = `
+            <div class="popup-card">
+                <button class="popup-close-btn" onclick="closePopup()">
+                    <img id="icon" src="https://cdn3.iconfinder.com/data/icons/pyconic-icons-1-2/512/close-512.png"/>
+                </button>
+                <h2>Decrypted Text</h2>
+                <pre>${decryptedText}</pre>
+            </div>`;
+        document.body.insertAdjacentHTML('beforeend', decryptedPopupContent);
+    } else {
+    
+        alert("Invalid decryption key!");
+    }
+}
+// Function to handle login
+
+
+
+function decrypt(encryptedText) {
+    var decryptedText = "";
+    for (var i = 0; i < encryptedText.length; i++) {
+       
+        var charCode = encryptedText.charCodeAt(i);
+        var decryptedCharCode = charCode - 2;
+        decryptedText += String.fromCharCode(decryptedCharCode);
+    }
+    return decryptedText;
+}
+
+        function closePopup() {
+            document.querySelector('.overlay').style.display = 'none';
+            const popup = document.querySelector('.popup-card');
+            if (popup) {
+                popup.remove();
+            }
+        }
+        function closePopup2() {
+            const popup = document.querySelector('.popup2-card');
+            if (popup) {
+                popup.remove();
+            }
+        }
+        function goHome() {
+            window.location.href = 'http://127.0.0.1:5000/';
+        }
+        function displayImagePopup(blob) {
+            document.querySelector('.overlay').style.display = 'block';
+    const imageUrl = URL.createObjectURL(blob);
+    const popupContent = `
+        <div class="popup-card left-popup">
+            <button class="popup-close-btn" onclick="closePopup()">
+                <img id="icon" src="https://cdn3.iconfinder.com/data/icons/pyconic-icons-1-2/512/close-512.png"/>
+            </button>
+            <h2>Enhanced Doc</h2>
+            <img id="filtered-image" src="${imageUrl}" alt="Enhanced Image">
+            <div>
+                <h3>Apply Filters</h3>
+                <button onclick="applyFilters()"><div class="color-circle black"></button>
+                <button onclick="applyFilters3()"><div class="color-circle brown"></button>
+                <button onclick="applyFilters4()"><div class="color-circle none"></button>
+            </div>
+        </div>`;
+    document.body.insertAdjacentHTML('beforeend', popupContent);
+}
+
+function saveFiltered() {
+        const filteredImage = document.getElementById('filtered-canvas');
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = filteredImage.width;
+        canvas.height = filteredImage.height;
+        ctx.drawImage(filteredImage, 0, 0);
+        const imageDataURL = canvas.toDataURL(); 
+        const link = document.createElement('a');
+        link.href = imageDataURL;
+        link.download = 'filtered.png'; 
+        link.click(); 
+    }
+function applyFilters() {
+    closePopup2();
+    document.querySelector('.overlay').style.display = 'block';
+    const filteredImage = document.getElementById('filtered-image');
+    
+    
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = filteredImage.width;
+    canvas.height = filteredImage.height;
+    ctx.drawImage(filteredImage, 0, 0);
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const grayscaleImageData = convertToGrayscale(imageData);
+
+    const threshold = 127; 
+    const thresholdedImageData = applyThreshold(grayscaleImageData, threshold);
+
+    ctx.putImageData(thresholdedImageData, 0, 0);
+
+    const popupContent = `
+        <div class="popup2-card right-popup">
+            <button class="popup-close-btn" onclick="closePopup2()">
+                <img id="icon" src="https://cdn3.iconfinder.com/data/icons/pyconic-icons-1-2/512/close-512.png"/>
+            </button>
+            <h2>Filtered Image</h2>
+            <img id="filtered-canvas" src="${canvas.toDataURL()}" alt="Filtered Image">
+            <button onclick="saveFiltered()" style="background-color: black; color: white; font-size:1rem;width: 120px; height: 40px;">Download</button>
+        </div>`;
+    document.body.insertAdjacentHTML('beforeend', popupContent);
+}
+function applyFilters4() {
+    closePopup2();
+    document.querySelector('.overlay').style.display = 'block';
+    const filteredImage = document.getElementById('filtered-image');
+    
+    // Clone the filtered image element
+    const clonedImage = filteredImage.cloneNode(true);
+
+    // Create a canvas to draw the image
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = filteredImage.width;
+    canvas.height = filteredImage.height;
+    ctx.drawImage(clonedImage, 0, 0);
+
+    const popupContent = `
+        <div class="popup2-card right-popup">
+            <button class="popup-close-btn" onclick="closePopup2()">
+                <img id="icon" src="https://cdn3.iconfinder.com/data/icons/pyconic-icons-1-2/512/close-512.png"/>
+            </button>
+            <h2>Filtered Image</h2>
+            <img id="filtered-canvas" src="${canvas.toDataURL()}" alt="Filtered Image">
+            <button onclick="saveFiltered()" style="background-color: black; color: white; font-size:1rem;width: 120px; height: 40px;">Download</button>
+        </div>`;
+    document.body.insertAdjacentHTML('beforeend', popupContent);
+}
+
+
+
+function applyFilters3() {
+    closePopup2();
+    document.querySelector('.overlay').style.display = 'block';
+    const filteredImage = document.getElementById('filtered-image');
+    
+  
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = filteredImage.width;
+    canvas.height = filteredImage.height;
+    ctx.drawImage(filteredImage, 0, 0);
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const grayscaleImageData = convertToGrayscale(imageData);
+    
+  
+    const threshold = 127; 
+    const thresholdedImageData = applyThreshold2(grayscaleImageData, threshold);
+    
+   
+    ctx.putImageData(thresholdedImageData, 0, 0);
+    
+   
+    const popupContent = `
+        <div class="popup2-card right-popup">
+            <button class="popup-close-btn" onclick="closePopup2()">
+                <img id="icon" src="https://cdn3.iconfinder.com/data/icons/pyconic-icons-1-2/512/close-512.png"/>
+            </button>
+            <h2>Filtered Image</h2>
+            <img id="filtered-canvas" src="${canvas.toDataURL()}" alt="Filtered Image">
+            <button onclick="saveFiltered()" style="background-color: black; color: white; font-size:1rem;width: 120px; height: 40px;">Download</button>
+        </div>`;
+    document.body.insertAdjacentHTML('beforeend', popupContent);
+}
+
+function applyThreshold(sourceImageData, threshold = 127) {
+    const src = sourceImageData.data;
+
+    for (let i = 0; i < src.length; i += 4) {
+        const r = src[i];
+        const g = src[i + 1];
+        const b = src[i + 2];
+
+       
+        src[i] = 255 - r;
+        src[i + 1] = 255 - g;
+        src[i + 2] = 255 - b;
+    }
+    
+    return sourceImageData;
+}
+function applyThreshold2(sourceImageData, threshold = 127) {
+    const src = sourceImageData.data;
+
+    for (let i = 0; i < src.length; i += 4) {
+        const r = src[i];
+        const g = src[i + 1];
+        const b = src[i + 2];
+
+       
+        const rNew = Math.min(255, r + 50); 
+        const gNew = Math.min(255, g + 20); 
+        const bNew = Math.min(255, b); 
+
+       
+        src[i] = rNew;
+        src[i + 1] = gNew;
+        src[i + 2] = bNew;
+    }
+    return sourceImageData;
+}
+
+
+function convertToGrayscale(imageData) {
+    const data = imageData.data;
+    for (let i = 0; i < data.length; i += 4) {
+        const brightness = (data[i] + data[i + 1] + data[i + 2]) / 3;
+        data[i] = brightness;
+        data[i + 1] = brightness;
+        data[i + 2] = brightness;
+    }
+    return imageData;
+}
+
+// Get a reference to the Firestore service
+
+    </script>
+    <script>
+        document.getElementById('share-doc').addEventListener('click', function() {
+            contentBox.innerHTML = `
+            <form id="email-form" action="/send_email" method="post" enctype="multipart/form-data">
+    <label for="receiverEmail">Receiver's Email:</label>
+    <input type="email" id="receiverEmail" name="receiverEmail" required><br><br>
+    <label for="subject">Subject:</label>
+    <input type="text" id="subject" name="subject" required><br><br>
+    <label for="message">Message:</label>
+    <textarea id="message" name="message" rows="4" required></textarea><br><br>
+    <input type="file" id="file-input" name="file" required><br><br>
+    <button type="submit">Send Email</button>
+</form>
+
+            `;           
+        });
+    </script>
+</body>
+</html>
